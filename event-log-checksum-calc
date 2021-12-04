@@ -92,6 +92,6 @@ def rewrite_chunk_header_checksum(evtx):
 
 
 if __name__ == '__main__':
-    rewrite_size_record("C:\\Users\\U227835\\Desktop\\security.evtx")
-    rewrite_records_checksum("C:\\Users\\U227835\\Desktop\\security.evtx")
-    rewrite_chunk_header_checksum("C:\\Users\\U227835\\Desktop\\security.evtx")
+    rewrite_size_record("C:\\Desktop\\security.evtx")
+    rewrite_records_checksum("C:\\Desktop\\security.evtx")
+    rewrite_chunk_header_checksum("C:\\Desktop\\security.evtx")

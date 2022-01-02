@@ -144,7 +144,7 @@ def rewrite_last_record_offset(evtx):
 # def rewrite_number_of_chunks(evtx):
 
 if __name__ == '__main__':
-    rewrite_size_record("C:\\Users\\U227835\\Desktop\\security.evtx")
-    rewrite_last_record_offset("C:\\Users\\U227835\\Desktop\\security.evtx")
-    rewrite_records_checksum("C:\\Users\\U227835\\Desktop\\security.evtx")
-    rewrite_chunk_header_checksum("C:\\Users\\U227835\\Desktop\\security.evtx")
+    rewrite_size_record("C:\\Users\\Desktop\\security.evtx")
+    rewrite_last_record_offset("C:\\Users\\Desktop\\security.evtx")
+    rewrite_records_checksum("C:\\Users\\Desktop\\security.evtx")
+    rewrite_chunk_header_checksum("C:\\Users\\Desktop\\security.evtx")

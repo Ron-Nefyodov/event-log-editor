@@ -12,9 +12,9 @@ def rewrite_size_record(evtx):
             if four_bytes == b'\x45\x6c\x66\x43':
                 four_bytes = f.read(4)
                 if four_bytes == b'\x68\x6e\x6b\x00':
-                    f.seek(16,1)
-                    next_record_id = f.read(8)
-                    f.seek(-16,1)
+                    f.seek(24,1)
+                    last_record_id = f.read(8)
+                    f.seek(-32,1)
                 f.seek(-4,1)
             if four_bytes == b'\x2a\x2a\x00\x00':
                 offset_first_size = f.tell() - 4
@@ -31,7 +31,7 @@ def rewrite_size_record(evtx):
                     f.write(new_size)
                 else:
                     f.seek(-4, 1)
-                    if((struct.unpack('<Q',next_record_id))[0] - 1 == (struct.unpack('<Q',record_id))[0]):
+                    if(last_record_id == record_id):
                         offset_second_size = f.tell()
                         new_size = struct.pack('<L', (offset_second_size - offset_first_size))
                         f.seek(offset_second_size - 4)
@@ -117,17 +117,20 @@ def rewrite_last_record_offset(evtx):
                 if four_bytes == b'\x68\x6e\x6b\x00':
                     f.seek(-8,1)
                     offset_start_chunk = f.tell()
-                    f.seek(42,1)
+                    f.seek(44,1)
                     offset_of_offset_last_event_record = f.tell()
-                    f.seek(-34, 1)
             if four_bytes == b'\x2a\x2a\x00\x00':
                 size = struct.unpack('<L', f.read(4))
                 f.seek(size[0] - 8, 1)
                 if f.read(4) != b'\x2a\x2a\x00\x00':
+                    f.seek(-4, 1)
+                    current_pos = f.tell()
                     f.seek(-size[0], 1)
                     offset_last_record = f.tell()
                     f.seek(offset_of_offset_last_event_record)
-                    f.write(struct.pack('<L',offset_last_record-offset_start_chunk))
+                    f.write(struct.pack('<L',(offset_last_record-offset_start_chunk)))
+                    f.seek(current_pos)
+
 
 
 

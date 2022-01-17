@@ -1,6 +1,15 @@
 # event-log-editor
 
 This project contains severl parts:
+
+1.python script that check evtx and update
+
+2.format xmls from evtx,edit the xml and put it back 
+
+# EVTX
+Log file created by the Windows 7 Event Viewer; contains a list of events recorded by Windows; saved in a proprietary binary format that can only be viewed within the Event Viewer program
+![image](https://user-images.githubusercontent.com/48227040/149736678-e077667d-cc11-4bf2-944b-b03e164f7974.png)
+
 ![image](https://user-images.githubusercontent.com/48227040/149730000-bc3b1ef7-9332-4716-81da-0ac5f0f0f6b9.png)
 
 TODO:In file header i need to recaculte the first chunk number and last chunk number

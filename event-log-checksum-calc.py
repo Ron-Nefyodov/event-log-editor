@@ -1,6 +1,7 @@
 # This is a sample Python script.
 import binascii
 import struct
+import Evtx.Evtx as evtx
 
 Signature_record = b'\x2a\x2a\x00\x00'
 Signature_chunk_first_4byte = b'\x45\x6c\x66\x43'
@@ -209,22 +210,40 @@ def pad_chunk(evtx):
     evtx_file.close()
 
 
-def create_xml_file(evtx):
-    xml_data = b''
-    with open(evtx, 'r+b') as evtx_file:
-        four_bytes = evtx_file.read(4)
-        while four_bytes:
-            four_bytes = evtx_file.read(4)
-            # check if it is the start of record
-            if four_bytes == Signature_record:
-                size_record = (struct.unpack('<L', evtx_file.read(4)))[0]
-                evtx_file.seek(16, 1)
-                xml_data +=  evtx_file.read(size_record - 28)
-    with open("C:\\Users\\U227835\\Desktop\\xml.xml", "w+b") as xml:
-        xml.write(xml_data)
+def create_xml_file(xml, evtx_file):
+
+    file = open(xml, "w+")
+    print("Writing output to " + xml)
+    error_count = 0
+    output_interval = 10000
+    output_count = 0
+    file.write("<Events>")
+    with evtx.Evtx(evtx_file) as log:
+        for chunk in log.chunks():
+            for record in chunk.records():
+                try:
+                    s = record.xml()
+                    file.write(s)
+                    output_count = output_count + 1
+
+                    if (output_count % output_interval == 0):
+                        print
+                        "[Working] %d records written to file." % output_count
+
+                except UnicodeDecodeError:
+                    error_count = error_count + 1
+                    print
+                    "UnicodeDecode Error encountered skipping entry Errors[%d]" % error_count
+                    continue
+    file.write("</Events>")
+    # print norm_count, error_count
+    file.close()
 
 
 # def load_xml_file_to_evtx(xml,evtx):
+# def rewrite_Element_name_offset
+# def rewrite_Element_Data_size
+# def rewrite_Attribute_name_offset
 # def rewrite_first_record_number_and_identifier(evtx):
 # def rewrite_last_record_number_and_identifier(evtx):
 # def rewrite_first_chunk(evtx):
@@ -235,10 +254,10 @@ def create_xml_file(evtx):
 # def rewrite_number_of_chunks(evtx):
 
 if __name__ == '__main__':
-    create_xml_file("C:\\Users\\U227835\\Desktop\\security.evtx")
-    # rewrite_size_record("C:\\Users\\U227835\\Desktop\\security.evtx")
-    # rewrite_last_record_offset("C:\\Users\\U227835\\Desktop\\security.evtx")
-    # rewrite_next_record_offset("C:\\Users\\U227835\\Desktop\\security.evtx")
+    # create_xml_file("C:\\Users\\U227835\\Desktop\\stam.xml", "C:\\Users\\U227835\\Desktop\\security.evtx")
+    rewrite_size_record("C:\\Users\\U227835\\Desktop\\security.evtx")
+    rewrite_last_record_offset("C:\\Users\\U227835\\Desktop\\security.evtx")
+    rewrite_next_record_offset("C:\\Users\\U227835\\Desktop\\security.evtx")
     # pad_chunk("C:\\Users\\U227835\\Desktop\\security.evtx")
-    # rewrite_records_checksum("C:\\Users\\U227835\\Desktop\\security.evtx")
-    # rewrite_chunk_header_checksum("C:\\Users\\U227835\\Desktop\\security.evtx")
+    rewrite_records_checksum("C:\\Users\\U227835\\Desktop\\security.evtx")
+    rewrite_chunk_header_checksum("C:\\Users\\U227835\\Desktop\\security.evtx")

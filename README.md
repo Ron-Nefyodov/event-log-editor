@@ -1,5 +1,6 @@
 # event-log-editor
-This project contitans severl parts:
+
+This project contains severl parts:
 ![image](https://user-images.githubusercontent.com/48227040/149730000-bc3b1ef7-9332-4716-81da-0ac5f0f0f6b9.png)
 
 TODO:In file header i need to recaculte the first chunk number and last chunk number

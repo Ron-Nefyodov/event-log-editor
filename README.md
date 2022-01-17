@@ -35,6 +35,7 @@ done:format binary xml to xml file
 done:pad chunks after puting records back in 
 
 TODO:format xml to binary xml and put it back to place
-
+ 
+TODO:xml editor
 
 thanks to svch0st for thew images 
